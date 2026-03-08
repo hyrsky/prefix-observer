@@ -27,7 +27,7 @@ spec:
               value: {{ required "config.dhcpv6Interface is required" .Values.config.dhcpv6Interface | quote }}
             - name: GATEWAY_HOST_ID
               value: {{ required "config.gatewayHostID is required" .Values.config.gatewayHostID | quote }}
-            - name: IP_POOL_NAME
+            - name: IPPOOL_NAME
               value: {{ required "config.ipPoolName is required" .Values.config.ipPoolName | quote }}
             - name: GATEWAY_NAME
               value: {{ required "config.gatewayName is required" .Values.config.gatewayName | quote }}
