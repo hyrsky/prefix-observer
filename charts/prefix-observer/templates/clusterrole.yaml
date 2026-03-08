@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "prefix-observer.fullname" . }}
+  labels:
+    {{- include "prefix-observer.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - cilium.io
+    resources:
+      - ciliumloadbalancerippools
+    verbs:
+      - get
+      - list
+      - patch
+  - apiGroups:
+      - gateway.networking.k8s.io
+    resources:
+      - gateways
+    verbs:
+      - get
+      - list
+      - patch

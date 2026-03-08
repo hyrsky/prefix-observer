@@ -1,0 +1,6 @@
+apiVersion: v2
+name: prefix-observer
+description: A Helm chart for prefix-observer DHCPv6 prefix delegation controller
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

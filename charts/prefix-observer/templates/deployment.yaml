@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "prefix-observer.fullname" . }}
+  labels:
+    {{- include "prefix-observer.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "prefix-observer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "prefix-observer.selectorLabels" . | nindent 8 }}
+    spec:
+      hostNetwork: true
+      serviceAccountName: {{ include "prefix-observer.serviceAccountName" . }}
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DHCPV6_INTERFACE
+              value: {{ required "config.dhcpv6Interface is required" .Values.config.dhcpv6Interface | quote }}
+            - name: GATEWAY_HOST_ID
+              value: {{ required "config.gatewayHostID is required" .Values.config.gatewayHostID | quote }}
+            - name: IP_POOL_NAME
+              value: {{ required "config.ipPoolName is required" .Values.config.ipPoolName | quote }}
+            - name: GATEWAY_NAME
+              value: {{ required "config.gatewayName is required" .Values.config.gatewayName | quote }}
+            - name: GATEWAY_NAMESPACE
+              value: {{ required "config.gatewayNamespace is required" .Values.config.gatewayNamespace | quote }}
+            - name: LB_PREFIX_LENGTH
+              value: {{ .Values.config.lbPrefixLength | quote }}
+            - name: DRY_RUN
+              value: {{ .Values.config.dryRun | quote }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            capabilities:
+              add:
+                - NET_RAW
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

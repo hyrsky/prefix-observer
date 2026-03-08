@@ -1,0 +1,30 @@
+image:
+  repository: ghcr.io/hyrsky/prefix-observer
+  tag: ""
+  pullPolicy: IfNotPresent
+
+config:
+  # Required — no defaults
+  dhcpv6Interface: ""
+  gatewayHostID: ""
+  ipPoolName: ""
+  gatewayName: ""
+  gatewayNamespace: ""
+  # Optional
+  lbPrefixLength: 112
+  dryRun: false
+
+serviceAccount:
+  create: true
+  name: ""
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    memory: 64Mi
+
+nodeSelector: {}
+
+tolerations: []
