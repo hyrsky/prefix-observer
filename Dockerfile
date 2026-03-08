@@ -7,6 +7,6 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /prefix-observer ./cmd
 
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM gcr.io/distroless/static-debian12
 COPY --from=builder /prefix-observer /prefix-observer
 ENTRYPOINT ["/prefix-observer"]

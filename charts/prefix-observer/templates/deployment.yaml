@@ -17,7 +17,7 @@ spec:
       hostNetwork: true
       serviceAccountName: {{ include "prefix-observer.serviceAccountName" . }}
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
